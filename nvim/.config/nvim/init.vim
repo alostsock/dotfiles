@@ -66,12 +66,13 @@ let g:netrw_liststyle = 3
 set list listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 " Change tabs to spaces
 set expandtab
-set shiftwidth=4
-set softtabstop=4
 set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 
 " File type behavior
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType markdown setlocal ts=2 sts=2 sw=2
 
 " Better search for fzf, respects .gitignore
 if executable('ag') == 1

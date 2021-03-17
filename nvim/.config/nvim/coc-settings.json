@@ -1,5 +1,6 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["css"],
   "javascript.suggestionActions.enabled": false,
+  "markdownlint.config": { "no-inline-html": false },
   "elixir.pathToElixirLS": "~/.elixir-ls/release/language_server.sh"
 }
