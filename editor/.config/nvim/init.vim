@@ -79,6 +79,8 @@ set shiftwidth=4
 
 " File type behavior
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType typescript setlocal ts=2 sts=2 sw=2
+autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType markdown setlocal ts=2 sts=2 sw=2
 
 " Better search for fzf, respects .gitignore
