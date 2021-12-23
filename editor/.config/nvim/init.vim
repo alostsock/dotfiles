@@ -78,6 +78,7 @@ set softtabstop=4
 set shiftwidth=4
 
 " File type behavior
+autocmd FileType sh setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
@@ -91,6 +92,11 @@ endif
 " Settings for vim-closetag
 let g:closetag_filenames = '*.html,*.jsx'
 let g:closetag_filetypes = 'html,javascriptreact,javascript.jsx,jsx'
+
+" In WSL, yank to clipboard
+if executable('clip.exe') == 1
+  autocmd TextYankPost * if v:event.operator ==# 'y' | call system('clip.exe', @0) | endif
+endif
 
 " ----------------------------------------
 " Colors
