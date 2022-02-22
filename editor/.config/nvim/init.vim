@@ -60,7 +60,7 @@ set nofoldenable
 " Line numbers
 set number
 " Colored column 80
-call matchadd('ColorColumn', '\%81v', 100)
+set colorcolumn=80,100,120
 
 " Enable mouse usage (all modes)
 set mouse=a
@@ -110,6 +110,8 @@ hi Normal ctermbg=none guibg=none
 hi SignColumn ctermbg=none guibg=none
 hi LineNr ctermbg=none guibg=none
 
+highlight Cursor guifg=steelblue
+
 " Floating window colors
 hi Pmenu ctermfg=248 guifg=#a8a897 ctermbg=236 guibg=#30302c
 hi PmenuSel ctermfg=248 guifg=#a8a897 ctermbg=239 guibg=#4e4e43
@@ -128,7 +130,7 @@ let g:lightline = {
 \   'colorscheme': 'seoul256',
 \   'active': {
 \       'left': [ ['mode', 'paste'] ],
-\       'right': [ ['percent'], ['fileencoding'], ['filetype'] ]
+\       'right': [ ['lineinfo'], ['percent'], ['fileencoding'], ['filetype'] ]
 \   },
 \   'tabline': {
 \       'left': [ ['buffers'] ]
