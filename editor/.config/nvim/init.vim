@@ -96,7 +96,7 @@ if executable('clip.exe') == 1
 endif
 
 " Improve autocomplete popup behavior
-set completeopt=longest,menuone
+set completeopt=longest,menuone,noinsert
 
 " ----------------------------------------
 " Colors
