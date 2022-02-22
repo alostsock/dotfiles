@@ -102,7 +102,6 @@ alias l='ls -CF'
 alias gs='git status'
 alias glog='git log --pretty --oneline --graph'
 
-# fzf
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
   source /usr/share/doc/fzf/examples/completion.bash
@@ -110,23 +109,23 @@ elif [ -f ~/.fzf.bash ]; then
   source ~/.fzf.bash
 fi
 
-# asdf
 if [ -f "$HOME/.asdf/asdf.sh" ]; then
   . $HOME/.asdf/asdf.sh
   . $HOME/.asdf/completions/asdf.bash
 fi
 
-# nvm
 if [ -f "$HOME/.nvm/nvm.sh" ]; then
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
-# pyenv
 if [ -d "$HOME/.pyenv/bin" ]; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init --path)"
 fi
 
+if [ -f "$HOME/.cargo/env" ]; then
+  . "$HOME/.cargo/env"
+fi
