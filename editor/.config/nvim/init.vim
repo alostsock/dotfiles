@@ -11,9 +11,11 @@ endif
 " Specify a directory for plugins
 call plug#begin(stdpath('data') . '/plugged')
 
+" Editor features
 Plug 'justinmk/vim-sneak'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-eunuch'
 
 " UI additions
 Plug 'junegunn/seoul256.vim'
@@ -31,72 +33,73 @@ call plug#end()
 " ----------------------------------------
 " Editor settings
 " ----------------------------------------
-set nocompatible
+" Use `:help <option>` for documentation
+
 set lazyredraw
 set nowrap
-" TextEdit might fail if hidden is not set.
-set hidden
+" Allow autocmd filetype detection to actually do things
+filetype on
 " Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
 " Makes nvim modify files instead of writing them whole.
 " Allows inotify, webpack-dev-server to watch files for changes.
 set backupcopy=yes
-
-" Set height of the command line
-set cmdheight=1
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
+" Enable mouse usage (all modes)
+set mouse=a
+" Improve autocomplete popup behavior
+set completeopt=longest,menuone,noinsert
 
 " Always show signcolumn. Prevents buffer from moving when signs change.
 set signcolumn=yes
 set nofoldenable
-" Line numbers
+" Show line numbers
 set number
-" Colored column 80
+" Show Rulers
 set colorcolumn=80,100,120
 
-" Enable mouse usage (all modes)
-set mouse=a
-
-" Some netrw defaults
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
+" Set height of the command line
+set cmdheight=1
+" Sets the time before firing the CursorHold event when typing stops.
+" Some plugins (ex. CoC) depend on this, so long values can make things
+" unresponsive.
+set updatetime=500
+" Don't show completion messages from ins-completion-menu in command line
+set shortmess+=c
 
 " Show hidden characters
 set list listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
-" Change tabs to spaces
-set expandtab
+
+" Tab/space behavior
+set expandtab " Change tabs to spaces
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-
-" File type behavior
 autocmd FileType sh setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType javascriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType markdown setlocal ts=2 sts=2 sw=2
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2
 
 " Better search for fzf, respects .gitignore
 if executable('ag') == 1
   let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 endif
 
-" Settings for vim-closetag
-let g:closetag_filenames = '*.html,*.jsx'
-let g:closetag_filetypes = 'html,javascriptreact,javascript.jsx,jsx'
-
 " In WSL, yank to clipboard
 if executable('clip.exe') == 1
   autocmd TextYankPost * if v:event.operator ==# 'y' | call system('clip.exe', @0) | endif
 endif
 
-" Improve autocomplete popup behavior
-set completeopt=longest,menuone,noinsert
+" Settings for vim-closetag
+let g:closetag_filenames = '*.html,*.jsx'
+let g:closetag_filetypes = 'html,javascriptreact,javascript.jsx,jsx'
+
+" Some netrw defaults
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
 
 " ----------------------------------------
 " Colors
@@ -125,6 +128,7 @@ hi Sneak ctermbg=grey guibg=grey
 " ----------------------------------------
 set laststatus=2
 set showtabline=2
+" Use lightlines insert/normal/etc mode indicators instead of vim's builtins
 set noshowmode
 
 let g:lightline = {
@@ -175,11 +179,11 @@ nnoremap <leader><leader> :bnext<CR>
 " Close buffer
 nnoremap <leader>d :bd<CR>
 
-" Map fzf.vim commands
+" fzf.vim commands
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>] :Buffers<CR>
 
-" Map omni completion commands
+" Omni completion commands
 imap <C-space> <C-x><C-o>
 imap <C-j> <C-n>
 imap <C-k> <C-p>
