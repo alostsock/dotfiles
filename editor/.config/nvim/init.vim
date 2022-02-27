@@ -27,6 +27,13 @@ Plug 'mengelbrecht/lightline-bufferline'
 Plug 'alvan/vim-closetag'
 Plug 'neovim/nvim-lspconfig'
 Plug 'mhartington/formatter.nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
 
@@ -75,6 +82,7 @@ set expandtab " Change tabs to spaces
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+autocmd FileType vim setlocal ts=2 sts=2 sw=2
 autocmd FileType sh setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 autocmd FileType javascriptreact setlocal ts=2 sts=2 sw=2
@@ -94,12 +102,12 @@ if executable('clip.exe') == 1
 endif
 
 " Settings for vim-closetag
-let g:closetag_filenames = '*.html,*.jsx'
-let g:closetag_filetypes = 'html,javascriptreact,javascript.jsx,jsx'
+let g:closetag_filenames='*.html,*.jsx'
+let g:closetag_filetypes='html,javascriptreact,javascript.jsx,jsx'
 
 " Some netrw defaults
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
+let g:netrw_banner=0
+let g:netrw_liststyle=3
 
 " ----------------------------------------
 " Colors
@@ -132,20 +140,20 @@ set showtabline=2
 set noshowmode
 
 let g:lightline = {
-\   'colorscheme': 'seoul256',
-\   'active': {
-\       'left': [ ['mode', 'paste'] ],
-\       'right': [ ['lineinfo'], ['percent'], ['fileencoding'], ['filetype'] ]
-\   },
-\   'tabline': {
-\       'left': [ ['buffers'] ]
-\   },
-\   'component_expand': {
-\       'buffers': 'lightline#bufferline#buffers'
-\   },
-\   'component_type': {
-\       'buffers': 'tabsel'
-\   }
+\ 'colorscheme': 'seoul256',
+\ 'active': {
+\   'left': [ ['mode', 'paste'] ],
+\   'right': [ ['lineinfo'], ['percent'], ['fileencoding'], ['filetype'] ]
+\ },
+\ 'tabline': {
+\   'left': [ ['buffers'] ]
+\ },
+\ 'component_expand': {
+\   'buffers': 'lightline#bufferline#buffers'
+\ },
+\ 'component_type': {
+\   'buffers': 'tabsel'
+\ }
 \}
 
 let g:lightline#bufferline#modified='*'
@@ -183,14 +191,6 @@ nnoremap <leader>d :bd<CR>
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>] :Buffers<CR>
 
-" Omni completion commands
-imap <C-space> <C-x><C-o>
-imap <C-j> <C-n>
-imap <C-k> <C-p>
-
-" Map formatter.nvim
-nnoremap <leader>f :Format<CR>
-
 " Map netrw
 nnoremap <leader>e :Explore<CR>
 
@@ -199,23 +199,43 @@ nnoremap <leader>e :Explore<CR>
 " ----------------------------------------
 lua << EOF
 
--- The following is modified from https://github.com/neovim/nvim-lspconfig#suggested-configuration
-
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
+
+-- Setup nvim-cmp. https://github.com/hrsh7th/nvim-cmp#recommended-configuration
+
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' }, { name = 'vsnip' },
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Setup nvim-lspconfig. https://github.com/neovim/nvim-lspconfig#suggested-configuration
+
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+  -- Use cmp-nvim-lsp instead.
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
@@ -224,44 +244,48 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
 end
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
+-- Use a loop to conveniently call 'setup' on multiple servers
 local servers = {
-    'jsonls',
-    'html',
-    'cssls',
-    'eslint',
-    'tsserver',
+  'jsonls',
+  'html',
+  'cssls',
+  'eslint',
+  'tsserver',
 }
+local capabilities = require('cmp_nvim_lsp').update_capabilities(
+  vim.lsp.protocol.make_client_capabilities()
+)
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
+    capabilities = capabilities,
     on_attach = on_attach,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
+    flags = { debounce_text_changes = 200 }
   }
 end
 
+-- Setup formatter.nvim. https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md#sample-configuration
+
+vim.api.nvim_set_keymap('n', '<leader>f', ':Format<CR>', opts)
+
 local format_prettier = function()
-    return {
-        exe = "npx",
-        args = { "prettier", "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
-        stdin = true,
-    }
+  return {
+    exe = "npx",
+    args = { "prettier", "--stdin-filepath", vim.api.nvim_buf_get_name(0) },
+    stdin = true,
+  }
 end
 
 require('formatter').setup {
-    logging = true,
-    filetype = {
-        typescript = { format_prettier },
-        typescriptreact = { format_prettier },
-    }
+  logging = true,
+  filetype = {
+    typescript = { format_prettier },
+    typescriptreact = { format_prettier },
+  }
 }
 
 EOF
