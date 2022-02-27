@@ -79,11 +79,13 @@ function parse_git_branch {
   git branch --no-color 2>/dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1$(parse_git_dirty)/"
 }
 
+# set xterm title: https://askubuntu.com/a/405769
+P_TITLE='\[\e]0;\u@\h: \w\a\]'
 P_RESET='\[$(tput sgr0)\]'
 P_CYAN='\[\033[36m\]'
 P_WHITE='\[\033[37m\]'
 
-PS1="${P_RESET}\n${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\n${P_CYAN}>${P_RESET} "
+PS1="${P_TITLE}${P_RESET}\n${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\n${P_CYAN}>${P_RESET} "
 
 # set PATH so it includes user's private ~/.local/bin, if it exists
 if [ -d "$HOME/.local/bin" ]; then
