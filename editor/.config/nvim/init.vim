@@ -16,6 +16,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-commentary'
 
 " UI additions
 Plug 'junegunn/seoul256.vim'
@@ -190,6 +191,11 @@ nnoremap <leader>d :bd<CR>
 " fzf.vim commands
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>] :Buffers<CR>
+
+" Comment lines
+nnoremap <C-_> :Commentary<CR>
+xnoremap <C-_> :Commentary<CR>
+inoremap <C-_> <Esc>:Commentary<CR>0i
 
 " Map netrw
 nnoremap <leader>e :Explore<CR>
