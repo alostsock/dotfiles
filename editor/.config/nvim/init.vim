@@ -85,12 +85,16 @@ set softtabstop=4
 set shiftwidth=4
 autocmd FileType vim setlocal ts=2 sts=2 sw=2
 autocmd FileType sh setlocal ts=2 sts=2 sw=2
+autocmd FileType json setlocal ts=2 sts=2 sw=2
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2
+autocmd FileType markdown setlocal ts=2 sts=2 sw=2
+autocmd FileType html setlocal ts=2 sts=2 sw=2
+autocmd FileType css setlocal ts=2 sts=2 sw=2
+autocmd FileType scss setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 autocmd FileType javascriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
-autocmd FileType markdown setlocal ts=2 sts=2 sw=2
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2
 
 " Better search for fzf, respects .gitignore
 if executable('ag') == 1
@@ -182,8 +186,9 @@ nnoremap <leader>r :source $MYVIMRC<CR>
 " Ctrl + Backspace in insert mode
 imap  <C-w>
 
-" Switch to next buffer quickly
-nnoremap <leader><leader> :bnext<CR>
+" Switch through buffers quickly
+nnoremap <leader>n :bnext<CR>
+nnoremap <leader>p :bprev<CR>
 
 " Close buffer
 nnoremap <leader>d :bd<CR>
@@ -289,6 +294,12 @@ end
 require('formatter').setup {
   logging = true,
   filetype = {
+    json = { format_prettier },
+    html = { format_prettier },
+    css = { format_prettier },
+    scss = { format_prettier },
+    javascript = { format_prettier },
+    javascriptreact = { format_prettier },
     typescript = { format_prettier },
     typescriptreact = { format_prettier },
   }
