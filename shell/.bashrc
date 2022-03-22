@@ -87,10 +87,9 @@ P_WHITE='\[\033[37m\]'
 
 PS1="${P_TITLE}${P_RESET}\n${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\n${P_CYAN}>${P_RESET} "
 
-# set PATH so it includes user's private ~/.local/bin, if it exists
-if [ -d "$HOME/.local/bin" ]; then
-  PATH="$HOME/.local/bin:$PATH"
-fi
+# include ~/.local/bin in PATH
+mkdir -p "$HOME/.local/bin"
+PATH="$HOME/.local/bin:$PATH"
 
 # helpful WSL user directory alias
 if [ -f /usr/bin/wslpath ] && [ -f /usr/bin/wslvar ]; then
