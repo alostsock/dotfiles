@@ -1,10 +1,11 @@
 #!/bin/sh
 
 sudo add-apt-repository -y ppa:neovim-ppa/stable
+sudo add-apt-repository -y ppa:lazygit-team/release
 sudo apt update
 sudo apt -y upgrade
 
-PKGS="neovim stow tree fzf silversearcher-ag"
+PKGS="neovim stow tree fzf silversearcher-ag lazygit"
 
 PYTHON_BUILD_DEPS="make build-essential libssl-dev zlib1g-dev libbz2-dev \
   libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils \
