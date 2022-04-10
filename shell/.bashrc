@@ -32,6 +32,14 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
+# more aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias gs='git status -s'
+git config --global alias.lp 'log --pretty --oneline --graph --all'
+git config --global alias.co 'checkout'
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -63,13 +71,6 @@ PS1="${P_TITLE}${P_RESET}\n${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\
 # include ~/.local/bin in PATH
 mkdir -p "$HOME/.local/bin"
 PATH="$HOME/.local/bin:$PATH"
-
-# aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias gs='git status'
-alias glog='git log --pretty --oneline --graph'
 
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && [ -f /usr/share/doc/fzf/examples/completion.bash ]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
