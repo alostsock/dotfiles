@@ -36,8 +36,10 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
-alias gs='git status -s'
-git config --global alias.lp 'log --pretty --oneline --graph --all'
+alias lg='lazygit'
+alias gs='git status'
+alias gd='git diff'
+git config --global alias.logp 'log --pretty --oneline --graph'
 git config --global alias.co 'checkout'
 
 # enable programmable completion features (you don't need to enable
@@ -50,6 +52,9 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# enable vi mode
+set -o vi
 
 # custom prompt
 function parse_git_dirty {
