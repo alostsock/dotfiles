@@ -53,9 +53,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# enable vi mode
-set -o vi
-
 # custom prompt
 function parse_git_dirty {
   [[ -z $(git status --porcelain 2>/dev/null) ]] || echo "*"
