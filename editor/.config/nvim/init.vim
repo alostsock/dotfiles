@@ -186,6 +186,13 @@ nnoremap <C-_> :Commentary<CR>
 xnoremap <C-_> :Commentary<CR>
 inoremap <C-_> <Esc>:Commentary<CR>0i
 
+" gitgutter hunk commands
+nmap [g <Plug>(GitGutterPrevHunk)
+nmap ]g <Plug>(GitGutterNextHunk)
+nmap ghp <Plug>(GitGutterPreviewHunk)
+nmap ghs <Plug>(GitGutterStageHunk)
+nmap ghu <Plug>(GitGutterUndoHunk)
+
 " ----------------------------------------
 " Lua configs
 " ----------------------------------------
