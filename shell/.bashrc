@@ -33,8 +33,8 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # more aliases
+alias ls='exa'
 alias ll='ls -alF'
-alias la='ls -A'
 alias l='ls -CF'
 alias lg='lazygit'
 alias gs='git status'
@@ -101,3 +101,4 @@ fi
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
 fi
+
