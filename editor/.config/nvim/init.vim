@@ -15,7 +15,6 @@ call plug#begin(stdpath('data') . '/plugged')
 Plug 'justinmk/vim-sneak'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-commentary'
 
 " UI additions
@@ -25,16 +24,14 @@ Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 
 " Language support
-Plug 'alvan/vim-closetag'
 Plug 'neovim/nvim-lspconfig'
 Plug 'mhartington/formatter.nvim'
+" https://github.com/hrsh7th/nvim-cmp#recommended-configuration
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
 
 call plug#end()
 
@@ -68,10 +65,6 @@ set colorcolumn=80,100,120
 
 " Set height of the command line
 set cmdheight=1
-" Sets the time before firing the CursorHold event when typing stops.
-" Some plugins (ex. CoC) depend on this, so long values can make things
-" unresponsive.
-set updatetime=500
 " Don't show completion messages from ins-completion-menu in command line
 set shortmess+=c
 
@@ -105,14 +98,6 @@ endif
 if executable('clip.exe') == 1
   autocmd TextYankPost * if v:event.operator ==# 'y' | call system('clip.exe', @0) | endif
 endif
-
-" Settings for vim-closetag
-let g:closetag_filenames='*.html,*.jsx'
-let g:closetag_filetypes='html,javascriptreact,javascript.jsx,jsx'
-
-" Some netrw defaults
-let g:netrw_banner=0
-let g:netrw_liststyle=3
 
 " ----------------------------------------
 " Colors
@@ -178,7 +163,6 @@ autocmd BufWritePost,TextChanged,TextChangedI * call lightline#update()
 " ----------------------------------------
 " Remap keys
 " ----------------------------------------
-let mapleader = " "
 
 " Reload init.vim
 nnoremap <leader>r :source $MYVIMRC<CR>
@@ -188,22 +172,19 @@ imap  <C-w>
 
 " Switch through buffers quickly
 nnoremap <leader>n :bnext<CR>
-nnoremap <leader>p :bprev<CR>
+nnoremap <leader>b :bprev<CR>
 
 " Close buffer
 nnoremap <leader>d :bd<CR>
 
 " fzf.vim commands
 nnoremap <C-p> :Files<CR>
-nnoremap <leader>] :Buffers<CR>
+nnoremap <leader>= :Buffers<CR>
 
 " Comment lines
 nnoremap <C-_> :Commentary<CR>
 xnoremap <C-_> :Commentary<CR>
 inoremap <C-_> <Esc>:Commentary<CR>0i
-
-" Map netrw
-nnoremap <leader>e :Explore<CR>
 
 " ----------------------------------------
 " Lua configs
@@ -217,19 +198,14 @@ local opts = { noremap=true, silent=true }
 local cmp = require'cmp'
 
 cmp.setup({
-  snippet = {
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
   mapping = {
-    ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ['<C-k>'] = cmp.mapping(cmp.mapping.scroll_docs(-4)),
+    ['<C-j>'] = cmp.mapping(cmp.mapping.scroll_docs(4)),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete()),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }), 
   },
   sources = cmp.config.sources({
-    { name = 'nvim_lsp' }, { name = 'vsnip' },
+    { name = 'nvim_lsp' },
   }, {
     { name = 'buffer' },
   })
@@ -238,13 +214,12 @@ cmp.setup({
 -- Setup nvim-lspconfig. https://github.com/neovim/nvim-lspconfig#suggested-configuration
 
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 local on_attach = function(client, bufnr)
-  -- Use cmp-nvim-lsp instead.
+  -- This is commented because when using cmp-nvim-lsp, omnifunc should be disabled.
   -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -255,9 +230,6 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers
@@ -267,10 +239,13 @@ local servers = {
   'cssls',
   'eslint',
   'tsserver',
+  'rust_analyzer',
 }
+
 local capabilities = require('cmp_nvim_lsp').update_capabilities(
   vim.lsp.protocol.make_client_capabilities()
 )
+
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     capabilities = capabilities,
@@ -279,7 +254,8 @@ for _, lsp in pairs(servers) do
   }
 end
 
--- Setup formatter.nvim. https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md#sample-configuration
+-- Setup formatter.nvim
+-- https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md#sample-configuration
 
 vim.api.nvim_set_keymap('n', '<leader>f', ':Format<CR>', opts)
 
