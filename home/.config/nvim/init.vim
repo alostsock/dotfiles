@@ -89,9 +89,8 @@ autocmd FileType javascriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
 
-" Better search for fzf, respects .gitignore
-if executable('ag') == 1
-  let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+if executable('rg') == 1
+  let $FZF_DEFAULT_COMMAND = "rg --files --no-ignore-vcs --hidden -g '!.git/'"
 endif
 
 " In WSL, yank to clipboard
