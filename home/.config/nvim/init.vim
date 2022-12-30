@@ -99,6 +99,10 @@ if executable('clip.exe') == 1
   autocmd TextYankPost * if v:event.operator ==# 'y' | call system('clip.exe', @0) | endif
 endif
 
+" search case-insensitive, unless the pattern has capital letters
+set ignorecase
+set smartcase
+
 " ----------------------------------------
 " Colors
 " ----------------------------------------
