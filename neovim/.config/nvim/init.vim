@@ -246,8 +246,10 @@ end
 local servers = {
   'jsonls',
   'html',
+  -- requires the npm package "vscode-langservers-extracted"
   'cssls',
   'eslint',
+  -- requires npm packages "typescript" and "typescript-language-server"
   'tsserver',
   'rust_analyzer',
 }

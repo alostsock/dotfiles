@@ -4,5 +4,5 @@ For use with GNU Stow. Usage:
 
 ```sh
 cd ~/dotfiles
-stow -v home/
+stow -v bash/
 ```
