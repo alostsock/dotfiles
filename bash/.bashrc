@@ -6,6 +6,10 @@ HISTCONTROL=ignoreboth
 HISTSIZE=5000
 shopt -s histappend
 
+# checks window size after every command.
+# this can result in rendering issues if disabled
+shopt -s checkwinsize
+
 # custom prompt
 function parse_git_dirty {
   [[ -z $(git status --porcelain 2>/dev/null) ]] || echo "*"
@@ -15,13 +19,27 @@ function parse_git_branch {
 }
 # set xterm title: https://askubuntu.com/a/405769
 P_TITLE='\[\e]0;\u@\h: \w\a\]'
-P_RESET='\[$(tput sgr0)\]'
+P_RESET="\[$(tput sgr0)\]"
 P_CYAN='\[\033[36m\]'
+P_RED='\[\033[31m\]'
+P_GREEN='\[\033[32m\]'
 P_WHITE='\[\033[37m\]'
-PS1="${P_TITLE}${P_RESET}\n${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\n${P_CYAN}>${P_RESET} "
+
+PS1="${P_TITLE}${P_RESET}\n${P_RED}🖳  ${P_CYAN}\w ${P_WHITE}\$(parse_git_branch)${P_RESET}\n${P_CYAN}>${P_RESET} "
 
 mkdir -p "$HOME/.local/bin"
 PATH="$HOME/.local/bin:$PATH"
+
+# allow opening URLs in WSL
+if grep -qi microsoft /proc/version; then
+  export BROWSER=wslview
+  alias xdg-open=wslview
+  # ln -snf /usr/bin/wslview "$HOME/.local/bin/xdg-open"
+fi
+
+if [ -f /etc/bash_completion.d/git-prompt ]; then
+  source /etc/bash_completion.d/git-prompt
+fi
 
 if [ -f /usr/share/doc/fzf/examples/key-bindings.bash ]; then
   source /usr/share/doc/fzf/examples/key-bindings.bash
@@ -29,8 +47,10 @@ elif [ -f ~/.fzf.bash ]; then
   source ~/.fzf.bash
 fi
 
-export FZF_DEFAULT_COMMAND='fd --type file --follow --hidden --exclude .git'
+export FZF_DEFAULT_COMMAND='fd -t f -t d --follow --hidden --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+export PATH="$PATH:/opt/nvim-linux64/bin"
 
 if [ -f "$HOME/.asdf/asdf.sh" ]; then
   . $HOME/.asdf/asdf.sh
@@ -51,6 +71,11 @@ fi
 
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
+fi
+
+if [ -d "$HOME/.fly" ]; then
+  export FLYCTL_INSTALL="$HOME/.fly"
+  export PATH="$FLYCTL_INSTALL/bin:$PATH"
 fi
 
 # aliases

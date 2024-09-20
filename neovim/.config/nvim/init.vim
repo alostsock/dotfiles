@@ -16,6 +16,7 @@ Plug 'justinmk/vim-sneak'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
+Plug 'f-person/git-blame.nvim'
 
 " UI additions
 Plug 'junegunn/seoul256.vim'
@@ -65,6 +66,8 @@ set colorcolumn=80,100,120
 
 " Set height of the command line
 set cmdheight=1
+" Reduce plugin trigger delay
+set updatetime=500
 " Don't show completion messages from ins-completion-menu in command line
 set shortmess+=c
 
@@ -196,6 +199,10 @@ nmap ghp <Plug>(GitGutterPreviewHunk)
 nmap ghs <Plug>(GitGutterStageHunk)
 nmap ghu <Plug>(GitGutterUndoHunk)
 
+" git blame commands
+nnoremap <C-b> :GitBlameToggle<CR>
+nnoremap gbo :GitBlameOpenCommitURL<CR>
+
 " ----------------------------------------
 " Lua configs
 " ----------------------------------------
@@ -250,11 +257,11 @@ local servers = {
   'cssls',
   'eslint',
   -- requires npm packages "typescript" and "typescript-language-server"
-  'tsserver',
+  'ts_ls',
   'rust_analyzer',
 }
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(
+local capabilities = require('cmp_nvim_lsp').default_capabilities(
   vim.lsp.protocol.make_client_capabilities()
 )
 
