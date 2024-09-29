@@ -80,16 +80,35 @@ fi
 
 # aliases
 
-if command -v exa > /dev/null; then
-  alias ls='exa'
-  alias ll='exa -alF'
+if command -v eza > /dev/null; then
+  alias ls='eza'
+  alias ll='eza -alF'
 else
   alias ll='ls -alF'
 fi
 
+alias tl='tmux ls'
+function tn() {
+  if [ $# -eq 0 ]; then
+    tmux new-session -d
+  elif [ $# -eq 1 ]; then
+    tmux new-session -d -s "$1"
+  else
+    tmux new-session -d -s "$1" "${*:2}"
+  fi
+  tl
+}
+function ta() {
+  if [ $# -eq 0 ]; then
+    tmux a
+  else
+    tmux a -t "$1"
+  fi
+}
+
 alias lg='lazygit'
+
 alias gs='git status'
 alias gd='git diff'
-
 git config --global alias.logp 'log --pretty --oneline --graph'
 
