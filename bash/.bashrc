@@ -49,7 +49,7 @@ elif [ -f ~/.fzf.bash ]; then
   source ~/.fzf.bash
 fi
 
-export FZF_DEFAULT_COMMAND='fd -t f -t d --follow --hidden --exclude .git'
+export FZF_DEFAULT_COMMAND='fd -tf -td --follow --hidden --exclude .git'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 export PATH="$PATH:/opt/nvim-linux64/bin"

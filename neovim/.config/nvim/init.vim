@@ -94,10 +94,6 @@ autocmd FileType typescript setlocal ts=2 sts=2 sw=2
 autocmd FileType typescriptreact setlocal ts=2 sts=2 sw=2
 autocmd FileType lua setlocal ts=2 sts=2 sw=2
 
-if executable('rg') == 1
-  let $FZF_DEFAULT_COMMAND = "rg --files --no-ignore-vcs --hidden -g '!.git/'"
-endif
-
 " In WSL, yank to clipboard
 if executable('clip.exe') == 1
   autocmd TextYankPost * if v:event.operator ==# 'y' | call system('clip.exe', @0) | endif
