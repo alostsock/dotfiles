@@ -188,6 +188,12 @@ nnoremap <leader>j :bprev<CR>
 " Close buffer
 nnoremap <leader>d :bd<CR>
 
+" Navigate splits
+nmap <C-h> :wincmd h<CR>
+nmap <C-j> :wincmd j<CR>
+nmap <C-k> :wincmd k<CR>
+nmap <C-l> :wincmd l<CR>
+
 " fzf.vim commands
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>= :Buffers<CR>
