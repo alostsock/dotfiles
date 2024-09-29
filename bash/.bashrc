@@ -1,3 +1,5 @@
+# shellcheck disable=SC1090
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -53,8 +55,8 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export PATH="$PATH:/opt/nvim-linux64/bin"
 
 if [ -f "$HOME/.asdf/asdf.sh" ]; then
-  . $HOME/.asdf/asdf.sh
-  . $HOME/.asdf/completions/asdf.bash
+  . "$HOME/.asdf/asdf.sh"
+  . "$HOME/.asdf/completions/asdf.bash"
 fi
 
 if [ -f "$HOME/.nvm/nvm.sh" ]; then
@@ -78,7 +80,7 @@ if [ -d "$HOME/.fly" ]; then
   export PATH="$FLYCTL_INSTALL/bin:$PATH"
 fi
 
-# aliases
+# aliases/commands
 
 if command -v eza > /dev/null; then
   alias ls='eza'
@@ -105,6 +107,7 @@ function ta() {
     tmux a -t "$1"
   fi
 }
+alias tl='tmux ls'
 
 alias lg='lazygit'
 

@@ -51,6 +51,8 @@ local servers = {
   'eslint',
   -- requires npm packages "typescript" and "typescript-language-server"
   'ts_ls',
+  -- requires shellcheck and npm package bash-language-server
+  'bashls',
   'rust_analyzer',
 }
 
