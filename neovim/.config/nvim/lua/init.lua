@@ -6,6 +6,10 @@ require('oil').setup({
   },
 })
 
+require('gitblame').setup({
+  enabled = false,
+})
+
 -- https://github.com/hrsh7th/nvim-cmp#recommended-configuration
 local cmp = require('cmp')
 cmp.setup({
