@@ -107,6 +107,9 @@ endif
 set ignorecase
 set smartcase
 
+" open new split panes to the right
+set splitright
+
 " ----------------------------------------
 " Colors
 " ----------------------------------------
@@ -206,7 +209,7 @@ nnoremap <C-b> :GitBlameToggle<CR>
 nnoremap gbc :GitBlameCopyCommitURL<CR>
 
 " Oil
-nnoremap - :Oil .<CR>
+nnoremap - :Oil<CR>
 
 " initialize Lua config
 lua require('init')
