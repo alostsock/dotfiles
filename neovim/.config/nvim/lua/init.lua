@@ -64,16 +64,21 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist, opts)
 end
 
--- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+--[[
+  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
+  npm install -g \
+    vscode-langservers-extracted \
+    typescript typescript-language-server \
+    bash-language-server
+  apt install shellcheck
+--]]
 local servers = {
   'jsonls',
   'html',
-  -- requires the npm package "vscode-langservers-extracted"
   'cssls',
   'eslint',
-  -- requires npm packages "typescript" and "typescript-language-server"
   'ts_ls',
-  -- requires shellcheck and npm package bash-language-server
   'bashls',
   'rust_analyzer',
 }
