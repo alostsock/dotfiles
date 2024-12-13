@@ -1,11 +1,12 @@
-fish_add_path ~/.local/bin
-
-source "$HOME/.cargo/env.fish"
-fnm env --use-on-cd --shell fish | source
-source "$HOME/.asdf/asdf.fish"
-
 if status is-interactive
     set fish_greeting
+
+    fish_add_path ~/.local/bin
+    fish_add_path ~/.fly/bin
+
+    source "$HOME/.cargo/env.fish"
+    fnm env --use-on-cd --shell fish | source
+    source "$HOME/.asdf/asdf.fish"
 
     alias ll='ls -la'
     alias tn='tmux new-session -d -s'
