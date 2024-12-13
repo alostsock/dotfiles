@@ -27,6 +27,7 @@ Plug 'mengelbrecht/lightline-bufferline'
 
 " Language support
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mhartington/formatter.nvim'
 " https://github.com/hrsh7th/nvim-cmp#recommended-configuration
 Plug 'hrsh7th/cmp-nvim-lsp'

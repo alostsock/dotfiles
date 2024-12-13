@@ -65,13 +65,15 @@ local on_attach = function(client, bufnr)
 end
 
 --[[
-  https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+  Required installs:
+  - https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md
+  - npm install -g \
+      vscode-langservers-extracted \
+      typescript typescript-language-server \
+      bash-language-server
+  - apt install shellcheck
+  - https://rust-analyzer.github.io/manual.html#installation
 
-  npm install -g \
-    vscode-langservers-extracted \
-    typescript typescript-language-server \
-    bash-language-server
-  apt install shellcheck
 --]]
 local servers = {
   'jsonls',
@@ -81,17 +83,36 @@ local servers = {
   'ts_ls',
   'bashls',
   'rust_analyzer',
+  'elixirls',
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+local lspconfig = require('lspconfig')
 for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
+  lspconfig[lsp].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     flags = { debounce_text_changes = 200 }
   }
 end
+
+lspconfig.elixirls.setup {
+  cmd = { "elixir-ls" }
+}
+
+-- Setup nvim-treesitter
+-- https://github.com/nvim-treesitter/nvim-treesitter?tab=readme-ov-file#modules
+require('nvim-treesitter.configs').setup {
+  ensure_installed = { "elixir", "heex", "eex" },
+  sync_install = false,
+  auto_install = false,
+  highlight = {
+    enable = true,
+    disable = {},
+    additional_vim_regex_highlighting = false,
+  },
+}
 
 -- Setup formatter.nvim
 -- https://github.com/mhartington/formatter.nvim/blob/master/CONFIG.md#sample-configuration
