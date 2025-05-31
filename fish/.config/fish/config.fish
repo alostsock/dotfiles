@@ -7,6 +7,7 @@ if status is-interactive
     source "$HOME/.cargo/env.fish"
     fnm env --use-on-cd --shell fish | source
     source "$HOME/.asdf/asdf.fish"
+    uv generate-shell-completion fish | source
 
     alias ll='ls -la'
     alias tn='tmux new-session -d -s'
