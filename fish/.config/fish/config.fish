@@ -17,5 +17,9 @@ if status is-interactive
     git config --global alias.co checkout
     alias gs='git status'
     alias gd='git diff'
+
+    if test -r "$HOME/secrets.fish"
+        source "$HOME/secrets.fish"
+    end
 end
 
