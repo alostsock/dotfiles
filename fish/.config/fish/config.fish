@@ -6,7 +6,6 @@ if status is-interactive
 
     source "$HOME/.cargo/env.fish"
     fnm env --use-on-cd --shell fish | source
-    source "$HOME/.asdf/asdf.fish"
     uv generate-shell-completion fish | source
 
     alias ll='ls -la'
@@ -18,8 +17,8 @@ if status is-interactive
     alias gs='git status'
     alias gd='git diff'
 
-    if test -r "$HOME/secrets.fish"
-        source "$HOME/secrets.fish"
+    if test -r "$HOME/.secrets.fish"
+        source "$HOME/.secrets.fish"
     end
 end
 
